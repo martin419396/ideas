@@ -1,5 +1,5 @@
 # Ideas
-A Play Framework applcation with Akka DistributedPubSub, Cassandra and Kafka.  
+A Play Framework application with Akka DistributedPubSub, Cassandra and Kafka.  
 
 ## Prerequisites
 - [sbt](http://www.scala-sbt.org/download.html)
