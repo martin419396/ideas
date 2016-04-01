@@ -1,5 +1,7 @@
 import com.google.inject.AbstractModule;
 
+import configuration.The;
+
 /**
  * This class is a Guice module that tells Guice how to bind several
  * different types. This Guice module is created when the Play
@@ -12,8 +14,10 @@ import com.google.inject.AbstractModule;
  */
 public class Module extends AbstractModule {
 
-    @Override
-    public void configure() {
-    }
+	@Override
+	public void configure() {
+		bind(The.class).asEagerSingleton();
+		bind(dal.CassandraClient.class).asEagerSingleton();
+	}
 
 }
