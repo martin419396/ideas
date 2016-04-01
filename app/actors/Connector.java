@@ -10,6 +10,7 @@ import akka.cluster.pubsub.DistributedPubSub;
 import akka.cluster.pubsub.DistributedPubSubMediator;
 import configuration.The;
 import dal.CassandraClient;
+import dal.KafkaClient;
 
 public class Connector extends UntypedActor {
 
@@ -31,7 +32,7 @@ public class Connector extends UntypedActor {
 			Logger.info("Persisting to Cassandra...");
 			CassandraClient.insert(idea);
 			Logger.info("Publishing to Kafka...");
-			//TODO Kafka
+			KafkaClient.send(idea);
 		}
 		else if (msg instanceof PublishedIdea) {
 			Idea idea = ((PublishedIdea) msg).idea;
