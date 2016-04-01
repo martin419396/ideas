@@ -12,5 +12,6 @@ libraryDependencies ++= Seq(
   "com.typesafe.akka" %% "akka-cluster" % akkaVersion,
   "com.typesafe.akka" %% "akka-cluster-tools" % akkaVersion,
   "com.typesafe.akka" %% "akka-stream" % akkaVersion,
-  "com.datastax.cassandra" % "cassandra-driver-core" % "3.0.0"
+  "com.datastax.cassandra" % "cassandra-driver-core" % "3.0.0",
+  "org.apache.kafka" % "kafka-clients" % "0.9.0.1"
 )

@@ -34,4 +34,8 @@ public class The {
 	public static String cassandraContactPoint() {
 		return configuration.getString("cassandra.contact-point");
 	}
+	
+	public static String kafkaBootstrapServers() {
+		return configuration.getString("kafka.bootstrap.servers");
+	}
 }
