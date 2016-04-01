@@ -7,12 +7,12 @@ public class Idea implements Serializable {
 
 	public final String author;
 	public final String content;
-	
+
 	public Idea(String author, String content) {
 		this.author = author;
 		this.content = content;
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see java.lang.Object#hashCode()
 	 */

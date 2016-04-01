@@ -15,12 +15,12 @@ import dal.KafkaClient;
 public class Connector extends UntypedActor {
 
 	private final ActorRef mediator;
-		
-    public Connector() {
-    	mediator = DistributedPubSub.get(getContext().system()).mediator();
-    	mediator.tell(new DistributedPubSubMediator.Subscribe(The.topic(), getSelf()), getSelf());
-    }
-    
+
+	public Connector() {
+		mediator = DistributedPubSub.get(getContext().system()).mediator();
+		mediator.tell(new DistributedPubSubMediator.Subscribe(The.topic(), getSelf()), getSelf());
+	}
+
 	public void onReceive(Object msg) {
 		if (msg instanceof DistributedPubSubMediator.SubscribeAck) {
 			Logger.info("{} subscribing to {}", getSelf(), The.topic());

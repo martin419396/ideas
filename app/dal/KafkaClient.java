@@ -20,9 +20,9 @@ import configuration.The;
 
 @Singleton
 public class KafkaClient {
-	
+
 	private static Producer<String, String> producer;
-	
+
 	@Inject
 	public KafkaClient(ApplicationLifecycle appLifecycle) {
 		Properties props = new Properties();
@@ -42,7 +42,7 @@ public class KafkaClient {
 			return CompletableFuture.completedFuture(null);
 		});
 	}
-	
+
 	public static Future<RecordMetadata> send(Idea idea) {
 		return producer.send(new ProducerRecord<String, String>(The.topic(), Json.toJson(idea).toString()));
 	}

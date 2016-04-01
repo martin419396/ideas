@@ -18,7 +18,7 @@ public class The {
 		The.actorSystem = actorSystem;
 		The.configuration = configuration;
 	}
-	
+
 	public static ActorSystem actorSystem() {
 		return actorSystem;
 	}
@@ -26,7 +26,7 @@ public class The {
 	public static String topic() {
 		return configuration.getString("topic");
 	}
-	
+
 	public static String cassandraKeyspace() {
 		return configuration.getString("cassandra.keyspace");
 	}
@@ -34,7 +34,7 @@ public class The {
 	public static String cassandraContactPoint() {
 		return configuration.getString("cassandra.contact-point");
 	}
-	
+
 	public static String kafkaBootstrapServers() {
 		return configuration.getString("kafka.bootstrap.servers");
 	}

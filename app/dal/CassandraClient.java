@@ -25,15 +25,15 @@ import configuration.The;
 public class CassandraClient {
 	private static Cluster cluster;
 	private static Session session;
-	
+
 	private static PreparedStatement insertStatement;
 	private static PreparedStatement selectStatement;
-	
+
 	@Inject
 	public CassandraClient(ApplicationLifecycle appLifecycle) {
 		cluster = Cluster.builder().addContactPoint(The.cassandraContactPoint()).build();
 		session = cluster.connect(The.cassandraKeyspace());
-		
+
 		Logger.info("Connected to Cassandra cluster: {}", cluster.getMetadata().getClusterName());
 		Logger.info("Keyspace: {}", session.getLoggedKeyspace());
 
@@ -46,18 +46,18 @@ public class CassandraClient {
 			return CompletableFuture.completedFuture(null);
 		});
 	}
-	
+
 	public static ResultSet insert(Idea idea) {
 		String date = (new SimpleDateFormat("yyyy-MM-dd")).format(new Date());
 		BoundStatement bound = insertStatement.bind(date, idea.author, idea.content);
 		return session.execute(bound);
 	}
-	
+
 	public static Iterator<Row> getAllIdeas() {
 		BoundStatement bound = selectStatement.bind();
 		return session.execute(bound).iterator();
 	}
-	
+
 	/*
 	 * Execute custom cql. Useful for testing.
 	 */
