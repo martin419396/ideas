@@ -4,4 +4,7 @@
 
 POST    /add                        controllers.IdeaController.add
 GET     /all                        controllers.IdeaController.all
+GET     /status                     controllers.IdeaController.status
+GET     /stream                     controllers.IdeaController.stream
+GET     /stream4status              controllers.IdeaController.stream4status
 GET     /ping                       controllers.IdeaController.ping

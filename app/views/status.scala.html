@@ -1,0 +1,53 @@
+@import play.mvc.Http.Request
+
+@(request: Request)
+
+@wsURL = @{routes.IdeaController.stream4status.webSocketURL(request)}
+
+<!DOCTYPE html>
+<html lang="en">
+  <title>Delivery Status (via @wsURL)</title>
+  
+  <script language="javascript" type="text/javascript">
+  
+  var messages = []
+
+  function init() {
+    websocket = new WebSocket("@wsURL")
+    websocket.onopen = function(evt) {
+      document.getElementById("status").innerHTML = "<p>CONNECTED</p>"
+    }
+    websocket.onclose = function(evt) {
+      document.getElementById("status").innerHTML = "<p>DISCONNECTED</p>"
+    }
+    websocket.onerror = function(evt) {
+      document.getElementById("status").innerHTML = "<p>ERROR!</p>"
+    }
+    websocket.onmessage = function(evt) {
+      if (messages.length > 9) {
+        messages = messages.slice(0, 9)
+      }
+      messages.unshift(evt.data)
+      render()
+    }
+  }
+
+  function render() {
+    var target = document.getElementById('messages')
+    var html = ''
+    for (var i = 0; i < messages.length; i++) {
+      html = html + '<div>' + messages[i] + '</div>'
+    }
+    target.innerHTML = html
+  }
+
+  window.addEventListener("load", init, false);
+
+  </script>
+
+  <h2>Delivery Status (via @wsURL)</h2>
+
+  <div id="status"></div>
+  <div id="messages"></div>
+
+</html>

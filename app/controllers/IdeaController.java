@@ -4,7 +4,9 @@ import models.Idea;
 import play.libs.Json;
 import play.mvc.BodyParser;
 import play.mvc.Controller;
+import play.mvc.LegacyWebSocket;
 import play.mvc.Result;
+import play.mvc.WebSocket;
 import actors.messages.ReceivedIdea;
 import akka.actor.ActorRef;
 import akka.actor.ActorSelection;
@@ -42,12 +44,27 @@ public class IdeaController extends Controller {
 	}
 
     public Result all() {
-        Source<JsonNode, ?> source =
+        Source<ByteString, ?> source =
         	Source
         		.fromIterator(() -> CassandraClient.getAllIdeas())
         		.map(row -> new Idea(row.getString("author"), row.getString("content")))
-        		.map(idea -> Json.toJson(idea));
+        		.map(idea -> Json.toJson(idea))
+        		.map(json -> ByteString.fromString(json.toString() + "\n"));
         
-        return ok().chunked(source.map(json -> ByteString.fromString(json.toString() + "\n")));
+        return ok().chunked(source);
     }
+    
+	public Result status() {
+		return ok(views.html.status.render(request()));
+	}
+	
+	//TODO Use WebSocket and Akka Streams instead (once documentation is available).
+	public LegacyWebSocket<JsonNode> stream() {
+	    return WebSocket.withActor(actors.StreamWebSocketActor::props);
+	}
+	
+	//TODO Use WebSocket and Akka Streams instead (once documentation is available).
+	public LegacyWebSocket<String> stream4status() {
+	    return WebSocket.withActor(actors.StreamWebSocketActor::props4status);
+	}
 }
