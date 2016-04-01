@@ -1,3 +1,6 @@
+import play.libs.akka.AkkaGuiceSupport;
+import actors.Connector;
+
 import com.google.inject.AbstractModule;
 
 import configuration.The;
@@ -12,12 +15,13 @@ import configuration.The;
  * adding `play.modules.enabled` settings to the `application.conf`
  * configuration file.
  */
-public class Module extends AbstractModule {
+public class Module extends AbstractModule implements AkkaGuiceSupport {
 
 	@Override
 	public void configure() {
 		bind(The.class).asEagerSingleton();
 		bind(dal.CassandraClient.class).asEagerSingleton();
+		bindActor(Connector.class, "connector");
 	}
 
 }

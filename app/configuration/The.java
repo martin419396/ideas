@@ -4,16 +4,27 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import play.Configuration;
+import akka.actor.ActorSystem;
 
 
 @Singleton
 public class The {
 
+	private static ActorSystem actorSystem;
 	private static Configuration configuration;
 
 	@Inject
-	public The(Configuration configuration) {
+	public The(ActorSystem actorSystem, Configuration configuration) {
+		The.actorSystem = actorSystem;
 		The.configuration = configuration;
+	}
+	
+	public static ActorSystem actorSystem() {
+		return actorSystem;
+	}
+
+	public static String topic() {
+		return configuration.getString("topic");
 	}
 	
 	public static String cassandraKeyspace() {

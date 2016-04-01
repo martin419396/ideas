@@ -2,3 +2,6 @@
 # This file defines all application routes (Higher priority routes first)
 # ~~~~
 
+POST    /add                        controllers.IdeaController.add
+GET     /all                        controllers.IdeaController.all
+GET     /ping                       controllers.IdeaController.ping
