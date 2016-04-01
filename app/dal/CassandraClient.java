@@ -23,45 +23,45 @@ import configuration.The;
 
 @Singleton
 public class CassandraClient {
-	private static Cluster cluster;
-	private static Session session;
+    private static Cluster cluster;
+    private static Session session;
 
-	private static PreparedStatement insertStatement;
-	private static PreparedStatement selectStatement;
+    private static PreparedStatement insertStatement;
+    private static PreparedStatement selectStatement;
 
-	@Inject
-	public CassandraClient(ApplicationLifecycle appLifecycle) {
-		cluster = Cluster.builder().addContactPoint(The.cassandraContactPoint()).build();
-		session = cluster.connect(The.cassandraKeyspace());
+    @Inject
+    public CassandraClient(ApplicationLifecycle appLifecycle) {
+        cluster = Cluster.builder().addContactPoint(The.cassandraContactPoint()).build();
+        session = cluster.connect(The.cassandraKeyspace());
 
-		Logger.info("Connected to Cassandra cluster: {}", cluster.getMetadata().getClusterName());
-		Logger.info("Keyspace: {}", session.getLoggedKeyspace());
+        Logger.info("Connected to Cassandra cluster: {}", cluster.getMetadata().getClusterName());
+        Logger.info("Keyspace: {}", session.getLoggedKeyspace());
 
-		insertStatement = session.prepare("insert into ideas (received, received_date, author, content) values (now(), ?, ?, ?)");
-		selectStatement = session.prepare("select * from ideas");
+        insertStatement = session.prepare("insert into ideas (received, received_date, author, content) values (now(), ?, ?, ?)");
+        selectStatement = session.prepare("select * from ideas");
 
-		appLifecycle.addStopHook(() -> {
-			session.close();
-			cluster.close();
-			return CompletableFuture.completedFuture(null);
-		});
-	}
+        appLifecycle.addStopHook(() -> {
+            session.close();
+            cluster.close();
+            return CompletableFuture.completedFuture(null);
+        });
+    }
 
-	public static ResultSet insert(Idea idea) {
-		String date = (new SimpleDateFormat("yyyy-MM-dd")).format(new Date());
-		BoundStatement bound = insertStatement.bind(date, idea.author, idea.content);
-		return session.execute(bound);
-	}
+    public static ResultSet insert(Idea idea) {
+        String date = (new SimpleDateFormat("yyyy-MM-dd")).format(new Date());
+        BoundStatement bound = insertStatement.bind(date, idea.author, idea.content);
+        return session.execute(bound);
+    }
 
-	public static Iterator<Row> getAllIdeas() {
-		BoundStatement bound = selectStatement.bind();
-		return session.execute(bound).iterator();
-	}
+    public static Iterator<Row> getAllIdeas() {
+        BoundStatement bound = selectStatement.bind();
+        return session.execute(bound).iterator();
+    }
 
-	/*
-	 * Execute custom cql. Useful for testing.
-	 */
-	public static ResultSet execute(String cql) {
-		return session.execute(cql);
-	}
+    /*
+     * Execute custom cql. Useful for testing.
+     */
+    public static ResultSet execute(String cql) {
+        return session.execute(cql);
+    }
 }

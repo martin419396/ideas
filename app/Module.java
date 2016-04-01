@@ -17,12 +17,12 @@ import configuration.The;
  */
 public class Module extends AbstractModule implements AkkaGuiceSupport {
 
-	@Override
-	public void configure() {
-		bind(The.class).asEagerSingleton();
-		bind(dal.CassandraClient.class).asEagerSingleton();
-		bind(dal.KafkaClient.class).asEagerSingleton();
-		bindActor(Connector.class, "connector");
-	}
+    @Override
+    public void configure() {
+        bind(The.class).asEagerSingleton();
+        bind(dal.CassandraClient.class).asEagerSingleton();
+        bind(dal.KafkaClient.class).asEagerSingleton();
+        bindActor(Connector.class, "connector");
+    }
 
 }
